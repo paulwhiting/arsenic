@@ -3,9 +3,10 @@ package util
 import (
 	"bufio"
 	"fmt"
-	"golang.org/x/net/publicsuffix"
 	"math/rand"
 	"time"
+
+	"golang.org/x/net/publicsuffix"
 
 	// "io/ioutil"
 	"log"
@@ -185,6 +186,14 @@ func FileExists(filename string) bool {
 	return !info.IsDir()
 }
 
+func DirExists(dir string) bool {
+	info, err := os.Stat(dir)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return info.IsDir()
+}
+
 type NoopWriter struct {
 }
 
@@ -221,4 +230,20 @@ func GetRootDomains(domains []string) []string {
 	}
 	sort.Strings(rootDomains)
 	return rootDomains
+}
+
+func LogMsg(args ...interface{}) {
+	Log("[+]", args...)
+}
+func LogWarn(args ...interface{}) {
+	Log("[!]", args...)
+}
+func LogInfo(args ...interface{}) {
+	Log("[-]", args...)
+}
+
+func Log(prefix string, args ...interface{}) {
+	fmt.Printf("%s ", prefix)
+	fmt.Print(args...)
+	fmt.Println()
 }
