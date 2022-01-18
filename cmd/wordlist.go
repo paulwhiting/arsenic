@@ -17,7 +17,7 @@ var wordlistCmd = &cobra.Command{
 	Use:       "wordlist (web-content)",
 	Short:     "Generate a wordlist",
 	Long:      `Generate a wordlist`,
-	ValidArgs: []string{"web-content"},
+	ValidArgs: []string{"web-content", "sqli", "xss"},
 	Args:      cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		generateWordlist(args[0])
@@ -66,7 +66,7 @@ func cleanLine(wordlistType, line string) string {
 }
 
 func shouldIgnoreLine(wordlistType, line string) bool {
-	if wordlistType == "web-content" {
+	if wordlistType == "web-content" || wordlistType == "sqli" || wordlistType == "xss" {
 		// this is why we can't have nice things
 		re := regexp.MustCompile(`^(## Contribed by)|^/*(\?|\.$|#!?)|\.(gif|ico|jpe?g|png|js|css)$|^\^|\[[0-9a-zA-Z]\-[0-9a-zA-Z]\]|\*\.|\$$`)
 		return re.MatchString(line)
